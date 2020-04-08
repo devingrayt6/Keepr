@@ -1,19 +1,48 @@
 <template>
-  <div class="dashboard">
-    <h1>WELCOME TO THE DASHBOARD</h1>
-    public {{ publicKeeps }} user {{ userKeeps }}
+  <div class="dashboard container text-center">
+    <h1 class="m-2">My DASHBOARD</h1>
+    <div class="toggle-view">
+      <button v-on:click="toggleVaults()" class="btn btn-primary vault-view m-1">Vaults</button>
+      <button v-on:click="toggleKeeps()" class="btn btn-secondary keep-view m-1">Keeps</button>
+    </div>
+    <vaults v-if="this.toggledVaults"/>
+    <keeps v-if="this.toggledKeeps" />
   </div>
 </template>
 
 <script>
+import Vaults from '../components/Vaults';
+import Keeps from '../components/Keeps';
+
 export default {
-  mounted() {
-    this.$store.dispatch("getVaults");
-    console.log("this is the vaults")
-    console.log(this.$store.state.vaults)
+  mounted() {},
+  computed: {},
+  components: {
+    Vaults,
+    Keeps
   },
-  computed: {}
+  data(){
+    return {
+      toggledVaults: false,
+      toggledKeeps: true
+    }
+  },
+  methods:{
+    toggleVaults(){
+      this.toggledKeeps = false;
+      this.toggledVaults = true;
+    },
+    toggleKeeps(){
+      this.toggledKeeps = true;
+      this.toggledVaults = false;
+    }
+  }
 };
 </script>
 
-<style></style>
+<style>
+  .toggle-view{
+    display: flex;
+    justify-content: flex-end;
+  }
+</style>

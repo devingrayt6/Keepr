@@ -28,6 +28,11 @@ namespace Keepr.Services
             return found;
         }
 
+        public IEnumerable<Keep> GetUserKeeps(string UserId)
+        {
+            return _repo.GetUserKeeps(UserId);
+        }
+
         public Keep Create(Keep newKeep)
         {
             return _repo.Create(newKeep);

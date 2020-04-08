@@ -13,6 +13,7 @@ export default {
   async beforeCreate() {
     await onAuth();
     this.$store.dispatch("setBearer", this.$auth.bearer);
+    console.log(this.$auth.bearer);
   },
   components: {
     Navbar

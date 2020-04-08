@@ -33,6 +33,22 @@ namespace Keepr.Controllers
             };
         }
 
+        [HttpGet("mykeeps")]
+
+        public ActionResult<IEnumerable<Keep>> GetUserKeeps()
+        {
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            try
+            {
+                return Ok(_ks.GetUserKeeps(userId));
+            }
+            catch (Exception e)
+            {
+                
+                return BadRequest(e.Message);
+            }
+        }
+
         [HttpGet("{id}")]
 
         public ActionResult<Keep> GetById(int id)
