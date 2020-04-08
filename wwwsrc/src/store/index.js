@@ -30,6 +30,13 @@ export default new Vuex.Store({
     },
     setUserKeeps(state, data){
       state.userKeeps = data;
+    },
+    updateKeep(state, data){
+      let userkeep = state.userKeeps.filter(k => k.id != data.id);
+      let publickeep = state.publicKeeps.filter(k => k.id != data.id);
+      publickeep.push(data);
+      userkeep.push(data);
+      console.log(state.userKeeps)
     }
   },
   actions: {
@@ -62,6 +69,14 @@ export default new Vuex.Store({
      } catch (error) {
        console.error(error);
      }
+    },
+    async updateKeepPrivacy({ commit }, data){
+      try {
+        let res = await api.put(`keeps/${data.id}`, data);
+        commit("updateKeep", res.data);
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 });

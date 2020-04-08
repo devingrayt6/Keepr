@@ -4,20 +4,15 @@
     <input class="form-control m-5" type="text" placeholder="Search" aria-label="Search">
     <div class="row">
       <div class="col-12 col-md-2" v-for="keep in getKeeps" :key="keep.id">
-      <div class="card text-center" style="width: 15rem;">
-        <img :src="keep.img" class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">{{keep.name}}</h5>
-          <p class="card-text">{{keep.description}}</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
+        <public-keep :data="keep"/>
       </div>
-    </div>
     </div>
   </div>
 </template>
 
 <script>
+import PublicKeep from '../components/publicKeep';
+
 export default {
   name: "home",
   mounted(){
@@ -36,6 +31,9 @@ export default {
     logout() {
       this.$store.dispatch("logout");
     }
+  },
+  components:{
+    PublicKeep
   }
 };
 </script>

@@ -5,8 +5,8 @@
       <button v-on:click="toggleVaults()" class="btn btn-primary vault-view m-1">Vaults</button>
       <button v-on:click="toggleKeeps()" class="btn btn-secondary keep-view m-1">Keeps</button>
     </div>
-    <vaults v-if="this.toggledVaults"/>
-    <keeps v-if="this.toggledKeeps" />
+    <vaults v-show="this.toggledVaults"/>
+    <keeps v-show="this.toggledKeeps" />
   </div>
 </template>
 

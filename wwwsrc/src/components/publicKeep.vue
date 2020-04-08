@@ -13,9 +13,6 @@
             <p class="cursor-pointer close-desc" v-if="showDesc" v-on:click="toggleDescription">x</p>
             <p class="card-text" v-if="showDesc">{{this.data.description}}</p>
             <p class="cursor-pointer" v-on:click="toggleDescription" v-if="!showDesc">...</p>
-            <hr>
-            <div class="cursor-pointer user-tools" v-on:click="togglePrivate"><span class="greenCheck" v-if="privateStatus">private <i class="fas fa-lock"></i></span><span class="greycheck" v-else>public <i class="fas fa-lock-open"></i></span></div>
-            <!-- <i class="far fa-edit edit"></i> -->
         </div>
     </div>
 </template>
@@ -25,25 +22,13 @@ export default {
     mounted() {},
     props: ['data'],
     methods:{
-        togglePrivate(){
-            let newKeep = this.data;
-            newKeep.isPrivate = !this.isPrivate;
-
-            this.$store.dispatch("updateKeepPrivacy", newKeep);
-            this.isPrivate = !this.isPrivate;
-        },
         toggleDescription(){
             this.showDesc = !this.showDesc;
         }
     },
-    computed:{
-        privateStatus(){
-            return this.isPrivate;
-        }
-    },
+    computed:{},
     data(){
         return{
-            isPrivate: this.data.isPrivate,
             showDesc: false
         }
     },
