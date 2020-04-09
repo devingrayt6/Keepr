@@ -19,7 +19,9 @@ export default new Vuex.Store({
   state: {
     publicKeeps: [],
     vaults: [],
-    userKeeps: []
+    activeVault: {},
+    userKeeps: [],
+    vaultKeeps: []
   },
   mutations: {
     setPublicKeeps(state, data){
@@ -37,6 +39,20 @@ export default new Vuex.Store({
       publickeep.push(data);
       userkeep.push(data);
       console.log(state.userKeeps)
+    },
+    createKeep(state, data){
+      state.publicKeeps.push(data);
+      state.userKeeps.push(data);
+    },
+    createVault(state, data){
+      state.vaults.push(data);
+    },
+    setActiveVault(state, data){
+      state.activeVault = data;
+      console.log(state.activeVault)
+    },
+    addVaultKeep(state, data){
+      state.vaultKeeps.push(data);
     }
   },
   actions: {
@@ -74,6 +90,38 @@ export default new Vuex.Store({
       try {
         let res = await api.put(`keeps/${data.id}`, data);
         commit("updateKeep", res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async CreateKeep({ commit }, keep){
+      try {
+        let res = await api.post(`keeps`, keep);
+        commit("createKeep", res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async CreateVault({ commit }, vault){
+      try {
+        let res = await api.post(`vaults`, vault);
+        commit("createVault", res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async setActiveVault({ commit }, data){
+      try {
+        commit("setActiveVault", data);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async CreateVaultKeep({ commit }, data){
+      try {
+        let res = await api.post(`vaultkeeps`, data);
+        console.log(res.data)
+        commit("addVaultKeep", res.data);
       } catch (error) {
         console.error(error);
       }

@@ -1,5 +1,5 @@
 <template>
-  <div class="home container-fluid">
+  <div class="home container-fluid text-center">
     <!-- Search form -->
     <input class="form-control m-5" type="text" placeholder="Search" aria-label="Search">
     <div class="row">

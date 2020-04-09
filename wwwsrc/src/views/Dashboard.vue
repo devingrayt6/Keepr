@@ -1,4 +1,4 @@
-<template>
+<template v-if="this.$store.state.userKeeps">
   <div class="dashboard container text-center">
     <h1 class="m-2">My DASHBOARD</h1>
     <div class="toggle-view">
@@ -15,7 +15,10 @@ import Vaults from '../components/Vaults';
 import Keeps from '../components/Keeps';
 
 export default {
-  mounted() {},
+  mounted() {
+    this.$store.dispatch("getUserKeeps");
+    this.$store.dispatch("getVaults");
+  },
   computed: {},
   components: {
     Vaults,

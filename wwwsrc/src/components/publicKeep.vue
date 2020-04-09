@@ -3,7 +3,14 @@
         <img :src="this.data.img" class="card-img-top" alt="...">
         <div class="card-body">
             <div class="row">
-                <div class="col-4"><i class="fab fa-korvue"></i> : {{data.keeps}}</div>
+                <div class="dropdown">
+                    <i class="fab fa-korvue ml-3" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i> : {{data.keeps}}
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <strong class="dropdown-item text-primary">Save to a vault:</strong>
+                        <a v-for="vault in userVaults" :key="vault.id" class="dropdown-item" href="#" v-on:click="addToVault(vault.id)" >{{vault.name}}</a>
+                    </div>
+                </div>
+
                 <div class="col-4"><i class="fas fa-share"></i> : {{data.shares}}</div>
                 <div class="col-4"><i class="far fa-eye"></i> : {{data.views}}</div>
             </div>
@@ -24,12 +31,24 @@ export default {
     methods:{
         toggleDescription(){
             this.showDesc = !this.showDesc;
+        },
+        addToVault(id){
+            let vaultkeep = {
+                keepId: this.data.id,
+                vaultId: id
+            }
+            this.$store.dispatch("CreateVaultKeep", vaultkeep)
         }
     },
-    computed:{},
+    computed:{
+        userVaults(){
+            return this.$store.state.vaults;
+        }
+    },
     data(){
         return{
-            showDesc: false
+            showDesc: false,
+            vaultId: ''
         }
     },
 }

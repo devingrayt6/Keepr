@@ -67,7 +67,7 @@ export default {
           this.createToggled = true;
       },
       CreateKeep(){
-          this.$store.dispatch()
+          this.$store.dispatch("CreateKeep", this.newKeep)
       }
   },
   components: {
@@ -80,7 +80,7 @@ export default {
               Name: '',
               Description: '',
               Img: '',
-              IsPrivate: ''
+              IsPrivate: false
           }
       }
   }
