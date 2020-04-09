@@ -14,8 +14,7 @@
             <p class="card-text" v-if="showDesc">{{this.data.description}}</p>
             <p class="cursor-pointer" v-on:click="toggleDescription" v-if="!showDesc">...</p>
             <hr>
-            <div class="cursor-pointer user-tools" v-on:click="togglePrivate"><span class="greenCheck" v-if="privateStatus">private <i class="fas fa-lock"></i></span><span class="greycheck" v-else>public <i class="fas fa-lock-open"></i></span></div>
-            <!-- <i class="far fa-edit edit"></i> -->
+            <div class="cursor-pointer user-tools" v-on:click="togglePrivate"><span class="greenCheck" v-if="privateStatus">private <i class="fas fa-lock"></i></span><span class="greycheck" v-else>public <i class="fas fa-lock-open"></i></span><span class="text-danger" v-if="privateStatus" v-on:click="deleteKeep"><i class="fas fa-trash-alt"></i></span></div> 
         </div>
     </div>
 </template>
@@ -29,11 +28,14 @@ export default {
             let newKeep = this.data;
             newKeep.isPrivate = !this.isPrivate;
 
-            this.$store.dispatch("updateKeepPrivacy", newKeep);
+            this.$store.dispatch("updateKeep", newKeep);
             this.isPrivate = !this.isPrivate;
         },
         toggleDescription(){
             this.showDesc = !this.showDesc;
+        },
+        deleteKeep(){
+            this.$store.dispatch("DeleteKeep", this.data)
         }
     },
     computed:{

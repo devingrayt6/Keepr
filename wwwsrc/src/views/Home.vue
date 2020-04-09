@@ -1,7 +1,7 @@
 <template>
   <div class="home container-fluid text-center">
     <!-- Search form -->
-    <input class="form-control m-5" type="text" placeholder="Search" aria-label="Search">
+    <input class="form-control my-5" type="text" placeholder="Search" aria-label="Search">
     <div class="row">
       <div class="col-12 col-md-2" v-for="keep in getKeeps" :key="keep.id">
         <public-keep :data="keep"/>

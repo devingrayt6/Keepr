@@ -87,6 +87,15 @@ namespace Keepr.Controllers
 
         // VaultsKeeps Controlls
 
+        [HttpGet("vaultkeeps")]
+        [Authorize]
+
+        public IEnumerable<VaultKeep> GetAllVaultKeeps()
+        {
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _vs.GetAllVaultKeeps(userId);
+        }
+
         [HttpGet("[controller]/{vaultId}/keeps")]
         [Authorize]
 

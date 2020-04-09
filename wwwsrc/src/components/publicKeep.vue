@@ -5,7 +5,10 @@
             <div class="row">
                 <div class="dropdown">
                     <i class="fab fa-korvue ml-3" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i> : {{data.keeps}}
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <div v-if="this.inVault" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item text-red" href="#" v-on:click="removeFromVault" >Remove from {{this.vaultData.name}}</a>
+                    </div>
+                    <div v-else class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <strong class="dropdown-item text-primary">Save to a vault:</strong>
                         <a v-for="vault in userVaults" :key="vault.id" class="dropdown-item" href="#" v-on:click="addToVault(vault.id)" >{{vault.name}}</a>
                     </div>
@@ -26,8 +29,10 @@
 
 <script>
 export default {
-    mounted() {},
-    props: ['data'],
+    mounted() {
+
+    },
+    props: ['data','inVault', 'vaultData'],
     methods:{
         toggleDescription(){
             this.showDesc = !this.showDesc;
@@ -37,7 +42,16 @@ export default {
                 keepId: this.data.id,
                 vaultId: id
             }
-            this.$store.dispatch("CreateVaultKeep", vaultkeep)
+            let newKeep = this.data
+            newKeep.keeps++;
+            this.$store.dispatch("CreateVaultKeep", {vaultKeep:vaultkeep, newKeep:newKeep});
+        },
+        removeFromVault(){
+            let vaultKeep={
+                keepId: this.data.id,
+                vaultId: this.vaultData.id
+            }
+            this.$store.dispatch("RemoveFromVault", vaultKeep)
         }
     },
     computed:{
@@ -80,5 +94,8 @@ i{
 }
 .edit{
     color: turquoise;
+}
+.text-red{
+    color: red;
 }
 </style>

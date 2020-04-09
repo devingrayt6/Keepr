@@ -97,7 +97,7 @@ namespace Keepr.Controllers
         }
 
         [HttpPut("{id}")]
-        // [Authorize]
+        [Authorize]
         public ActionResult<Keep> Update(int id, [FromBody] Keep updatedKeep)
         {
 

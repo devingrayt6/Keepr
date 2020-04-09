@@ -49,6 +49,14 @@ export default new Vuex.Store({
     createVault(state, data){
       state.vaults.push(data);
     },
+    deleteKeep(state, data){
+      let newKeeps = state.userKeeps.filter(k => k.id != data.id);
+      state.userKeeps = newKeeps;
+    },
+    deleteVault(state, id){
+      let newVaults = state.vaults.filter(v => v.id != id);
+      state.vaults = newVaults;
+    },
     setActiveVault(state, data){
       state.activeVault = data;
       console.log(state.activeVault)
@@ -61,6 +69,16 @@ export default new Vuex.Store({
     },
     setCurrentVaultKeeps(state, data){
       state.currentVaultKeeps = data;
+    },
+    setVaultKeeps(state, data){
+      state.vaultKeeps = data;
+      console.log(state.vaultKeeps)
+    },
+    removeFromVault(state,data){
+      let newVaultKeeps = state.vaultKeeps.filter(vk => vk.id != data.id);
+      state.vaultKeeps = newVaultKeeps;
+      let newCurrentVaultKeeps = state.currentVaultKeeps.filter(k => k.id != data.keepId);
+      state.currentVaultKeeps = newCurrentVaultKeeps;
     }
   },
   actions: {
@@ -94,7 +112,7 @@ export default new Vuex.Store({
        console.error(error);
      }
     },
-    async updateKeepPrivacy({ commit }, data){
+    async updateKeep({ commit }, data){
       try {
         let res = await api.put(`keeps/${data.id}`, data);
         commit("updateKeep", res.data);
@@ -118,6 +136,22 @@ export default new Vuex.Store({
         console.error(error);
       }
     },
+    async DeleteKeep({ commit }, data){
+      try {
+        let res = await api.delete(`keeps/${data.id}`);
+        commit("deleteKeep", data);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async DeleteVault({ commit }, id){
+      try {
+        let res = await api.delete(`vaults/${id}`);
+        commit("deleteVault", id);
+      } catch (error) {
+        console.error(error);
+      }
+    },
     async setActiveVault({ commit }, data){
         commit("setActiveVault", data);
     },
@@ -126,9 +160,13 @@ export default new Vuex.Store({
     },
     async CreateVaultKeep({ commit }, data){
       try {
-        let res = await api.post(`vaultkeeps`, data);
-        console.log(res.data)
-        commit("addVaultKeep", res.data);
+        let exists = this.state.currentVaultKeeps.find(k => k.id == data.newKeep.id);
+
+        if(!exists){
+          let res = await api.post(`vaultkeeps`, data.vaultKeep);
+          commit("addVaultKeep", res.data);
+          this.dispatch("updateKeep", data.newKeep)
+        }
       } catch (error) {
         console.error(error);
       }
@@ -139,6 +177,24 @@ export default new Vuex.Store({
         commit("setCurrentVaultKeeps", res.data);
       } catch (error) {
         console.error(error);
+      }
+    },
+    async GetVaultKeeps({ commit }, data){
+      try {
+        let res = await api.get(`vaultkeeps`);
+        commit("setVaultKeeps", res.data);
+      } catch (error) {
+        
+      }
+    },
+    async RemoveFromVault({ commit }, data){
+      try {
+        let vaultKeep = this.state.vaultKeeps.find(v => v.vaultId == data.vaultId && v.keepId == data.keepId);
+        console.log(vaultKeep)
+        let res = await api.delete(`vaultkeeps/${vaultKeep.id}`);
+        commit("removeFromVault", vaultKeep)
+      } catch (error) {
+        
       }
     }
   }

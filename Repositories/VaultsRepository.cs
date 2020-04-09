@@ -14,6 +14,7 @@ namespace Keepr.Repositories
         {
             _db = db;
         }
+        
         public IEnumerable<Vault> Get(string UserId)
         {
             string sql = "SELECT * FROM vaults WHERE userId = @UserId";
@@ -63,6 +64,11 @@ namespace Keepr.Repositories
 
         // VaultKeeps 
 
+        internal IEnumerable<VaultKeep> GetAllVaultKeeps(string UserId)
+        {
+            string sql = @"SELECT * FROM vaultkeeps WHERE userId = @UserId";
+            return _db.Query<VaultKeep>(sql, new { UserId });
+        }
         internal IEnumerable<Keep> GetVaultKeeps(int vaultId, string userId)
         {
             string sql = @"

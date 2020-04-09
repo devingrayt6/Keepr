@@ -46,6 +46,10 @@ namespace Keepr.Services
 
         // VaultKeeps
 
+        public IEnumerable<VaultKeep> GetAllVaultKeeps(string userId)
+        {
+            return _repo.GetAllVaultKeeps(userId);
+        }
         public IEnumerable<Keep> GetVaultKeeps(int vaultId, string userId)
         {
             return _repo.GetVaultKeeps(vaultId, userId);

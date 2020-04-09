@@ -18,6 +18,8 @@ export default {
   mounted() {
     this.$store.dispatch("getUserKeeps");
     this.$store.dispatch("getVaults");
+    this.$store.dispatch("GetVaultKeeps");
+
   },
   computed: {},
   components: {
