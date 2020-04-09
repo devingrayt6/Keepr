@@ -20,8 +20,10 @@ export default new Vuex.Store({
     publicKeeps: [],
     vaults: [],
     activeVault: {},
+    isVaultOpen: false,
     userKeeps: [],
-    vaultKeeps: []
+    vaultKeeps: [],
+    currentVaultKeeps: []
   },
   mutations: {
     setPublicKeeps(state, data){
@@ -51,8 +53,14 @@ export default new Vuex.Store({
       state.activeVault = data;
       console.log(state.activeVault)
     },
+    toggleVaultStatus(state, data){
+      state.isVaultOpen = data.isVaultOpen;
+    },
     addVaultKeep(state, data){
       state.vaultKeeps.push(data);
+    },
+    setCurrentVaultKeeps(state, data){
+      state.currentVaultKeeps = data;
     }
   },
   actions: {
@@ -111,17 +119,24 @@ export default new Vuex.Store({
       }
     },
     async setActiveVault({ commit }, data){
-      try {
         commit("setActiveVault", data);
-      } catch (error) {
-        console.error(error);
-      }
+    },
+    async toggleVaultStatus({ commit }, data){
+      commit("toggleVaultStatus", data);
     },
     async CreateVaultKeep({ commit }, data){
       try {
         let res = await api.post(`vaultkeeps`, data);
         console.log(res.data)
         commit("addVaultKeep", res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async GetKeepsByVaultId({ commit }, data){
+      try {
+        let res = await api.get(`vaults/${data.vaultId}/keeps`);
+        commit("setCurrentVaultKeeps", res.data);
       } catch (error) {
         console.error(error);
       }

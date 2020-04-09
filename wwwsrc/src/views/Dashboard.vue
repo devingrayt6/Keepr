@@ -1,5 +1,5 @@
 <template v-if="this.$store.state.userKeeps">
-  <div class="dashboard container text-center">
+  <div class="dashboard container-fluid text-center">
     <h1 class="m-2">My DASHBOARD</h1>
     <div class="toggle-view">
       <button v-on:click="toggleVaults()" class="btn btn-primary vault-view m-1">Vaults</button>

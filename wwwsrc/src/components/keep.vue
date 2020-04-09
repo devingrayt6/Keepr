@@ -1,5 +1,5 @@
 <template>
-    <div class="card text-center" style="width: 15rem;">
+    <div class="card text-center" style="width: 100%;">
         <img :src="this.data.img" class="card-img-top" alt="...">
         <div class="card-body">
             <div class="row">

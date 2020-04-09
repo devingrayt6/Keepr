@@ -14,7 +14,9 @@ export default {
     props:['data'],
     methods:{
         setActiveVault(){
-            this.$store.dispatch("setActiveVault", this.data)
+            this.$store.dispatch("setActiveVault", this.data);
+            this.$store.dispatch("toggleVaultStatus", {isVaultOpen:true});
+            this.$store.dispatch("GetKeepsByVaultId", {vaultId:this.data.id});
         }
     }
 }
