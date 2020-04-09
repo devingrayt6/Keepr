@@ -17,13 +17,15 @@ namespace Keepr.Repositories
 
         public IEnumerable<Keep> Get()
         {
-            string sql = "SELECT * FROM Keeps WHERE isPrivate = 0;";
+            string sql = "SELECT * FROM Keeps WHERE isPrivate = 0";
             return _db.Query<Keep>(sql);
         }
 
         public Keep GetById(int Id)
         {
-            string sql = "SELECT * FROM keeps WHERE id = @Id";
+            string sql = @"
+            SELECT * FROM keeps WHERE id = @Id AND isPrivate = 0
+            ";
             return _db.QueryFirstOrDefault<Keep>(sql, new { Id });
         } 
 
@@ -60,16 +62,16 @@ namespace Keepr.Repositories
                 views = @Views,
                 shares = @Shares,
                 keeps = @Keeps
-            WHERE id = @Id
+            WHERE id = @Id AND userId = @UserId
             ";
             _db.ExecuteScalar(sql, KeepData);
             return KeepData;
         }
 
-        internal bool Delete(int Id)
+        internal bool Delete(int Id, string UserId)
         {
-            string sql = "DELETE FROM keeps WHERE id = @Id LIMIT 1";
-            int success = _db.Execute(sql, new{ Id });
+            string sql = "DELETE FROM keeps WHERE id = @Id AND userId = @UserId LIMIT 1";
+            int success = _db.Execute(sql, new{ Id, UserId });
             return success == 1;
         }
 

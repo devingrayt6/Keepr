@@ -21,10 +21,10 @@ namespace Keepr.Repositories
             return _db.Query<Vault>(sql, new { UserId });
         }
 
-        public Vault GetById(int Id)
+        public Vault GetById(int Id, string UserId)
         {
-            string sql = "Select * FROM vaults WHERE id = @Id";
-            return _db.QueryFirstOrDefault<Vault>(sql, new { Id });
+            string sql = "Select * FROM vaults WHERE id = @Id AND userId = @UserId";
+            return _db.QueryFirstOrDefault<Vault>(sql, new { Id, UserId });
         }
 
         internal Vault Create(Vault vaultData)
@@ -41,7 +41,7 @@ namespace Keepr.Repositories
             return vaultData;
         }
 
-        internal Vault Update(Vault vaultData)
+        internal Vault Update(Vault vaultData, string UserId)
         {
             string sql = @"
             UPDATE vaults
@@ -49,16 +49,16 @@ namespace Keepr.Repositories
                 id = @Id,
                 name = @Name,
                 description = @Description
-            WHERE id = @Id
+            WHERE id = @Id AND userId = @UserId
             ";
-            _db.ExecuteScalar(sql, vaultData);
+            _db.ExecuteScalar(sql, new { vaultData, UserId });
             return vaultData;
         }
 
-        internal bool Delete(int Id)
+        internal bool Delete(int Id, string UserId)
         {
-            string sql = "DELETE FROM vaults WHERE id = @Id LIMIT 1";
-            int success = _db.Execute(sql, new{ Id });
+            string sql = "DELETE FROM vaults WHERE id = @Id AND userId = @UserId LIMIT 1";
+            int success = _db.Execute(sql, new{ Id, UserId });
             return success == 1;
         }
 
@@ -96,12 +96,12 @@ namespace Keepr.Repositories
             return newVaultKeep;
         }
 
-        internal bool DeleteKeep(int Id)
+        internal bool DeleteVaultKeep(int Id, string UserId)
         {
             string sql = @"
-            DELETE FROM vaultkeeps WHERE id = @Id
+            DELETE FROM vaultkeeps WHERE id = @Id AND userId = @UserId
             ";
-            int success = _db.Execute(sql, new { Id });
+            int success = _db.Execute(sql, new { Id, UserId });
             return success == 1;
         }
     }

@@ -21,17 +21,26 @@ namespace Keepr.Controllers
         [HttpGet("[controller]")]
         [Authorize]
 
-        public IEnumerable<Vault> Get()
+        public ActionResult<IEnumerable<Vault>> Get()
         {
             var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            return _vs.Get(userId);
+            return Ok(_vs.Get(userId));
         }
 
         [HttpGet("[controller]/{id}")]
         [Authorize]
         public ActionResult<Vault> GetById(int id)
         {
-            return _vs.GetById(id);
+            try
+            {
+                var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                return Ok(_vs.GetById(id, userId));
+            }
+            catch (Exception e)
+            {
+                
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPost("[controller]")]
@@ -59,8 +68,9 @@ namespace Keepr.Controllers
         {
             try
             {
+                var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 newVault.Id = id;
-                return Ok(_vs.Update(newVault));
+                return Ok(_vs.Update(newVault, userId));
             }
             catch (Exception e)
             {
@@ -75,7 +85,8 @@ namespace Keepr.Controllers
         {
             try
             {
-                return Ok(_vs.Delete(id));
+                var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                return Ok(_vs.Delete(id, userId));
             }
             catch (Exception e)
             {
@@ -90,19 +101,36 @@ namespace Keepr.Controllers
         [HttpGet("vaultkeeps")]
         [Authorize]
 
-        public IEnumerable<VaultKeep> GetAllVaultKeeps()
+        public ActionResult<IEnumerable<VaultKeep>> GetAllVaultKeeps()
         {
-            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            return _vs.GetAllVaultKeeps(userId);
+            try
+            {
+                var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return Ok(_vs.GetAllVaultKeeps(userId));
+            
+            }
+            catch (System.Exception)
+            {
+                
+                throw;
+            }
         }
 
         [HttpGet("[controller]/{vaultId}/keeps")]
         [Authorize]
 
-        public IEnumerable<Keep> GetKeepsByVaultId(int vaultId)
+        public ActionResult<IEnumerable<Keep>> GetKeepsByVaultId(int vaultId)
         {
-             var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            return _vs.GetVaultKeeps(vaultId, userId);
+            try
+            {
+                var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return Ok(_vs.GetVaultKeeps(vaultId, userId));
+            }
+            catch (Exception e)
+            {
+                
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPost("vaultkeeps")]
@@ -123,17 +151,17 @@ namespace Keepr.Controllers
 
 
         [HttpDelete("vaultkeeps/{id}")]
-        public ActionResult<bool> DeleteKeep(int id)
+        public ActionResult<bool> DeleteVaultKeep(int id)
         {
             try
             {
-                return Ok(_vs.DeleteKeep(id));
+                var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                return Ok(_vs.DeleteVaultKeep(id, userId));
             }
-            catch (System.Exception)
+            catch (Exception e)
             {
                 
-                throw;
-            }
+                return BadRequest(e.Message);            }
         }
 
     }

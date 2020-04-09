@@ -38,7 +38,7 @@ namespace Keepr.Services
             return _repo.Create(newKeep);
         }
 
-        public Keep Update(Keep updatedKeep)
+        public Keep Update(Keep updatedKeep, string userId)
         {
             Keep exists = _repo.GetById(updatedKeep.Id);
             if(exists == null)
@@ -48,9 +48,9 @@ namespace Keepr.Services
             return _repo.Update(updatedKeep);
         }
 
-        public bool Delete(int id)
+        public bool Delete(int id, string userId)
         {
-            return _repo.Delete(id);
+            return _repo.Delete(id, userId);
         }
     }
 }

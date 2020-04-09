@@ -19,9 +19,9 @@ namespace Keepr.Services
             return _repo.Get(userId);
         }
 
-        public Vault GetById(int Id)
+        public Vault GetById(int Id, string userId)
         {
-            return _repo.GetById(Id);
+            return _repo.GetById(Id, userId);
         }
 
         public Vault Create(Vault vaultData)
@@ -29,19 +29,19 @@ namespace Keepr.Services
             return _repo.Create(vaultData);
         }
 
-        public Vault Update(Vault newVault)
+        public Vault Update(Vault newVault, string userId)
         {
-            Vault exists = _repo.GetById(newVault.Id);
+            Vault exists = _repo.GetById(newVault.Id, userId);
             if(exists == null)
             {
                 throw new Exception("Invalid Id");
             }
-            return _repo.Update(newVault);
+            return _repo.Update(newVault, userId);
         }
 
-        public bool Delete(int Id)
+        public bool Delete(int Id, string UserId)
         {
-            return _repo.Delete(Id);
+            return _repo.Delete(Id, UserId);
         }
 
         // VaultKeeps
@@ -60,9 +60,9 @@ namespace Keepr.Services
             return _repo.CreateVaultKeep(newVaultKeep);
         }
 
-        public bool DeleteKeep(int id)
+        public bool DeleteVaultKeep(int id, string userId)
         {
-            return _repo.DeleteKeep(id);
+            return _repo.DeleteVaultKeep(id, userId);
         }
     }
 }
